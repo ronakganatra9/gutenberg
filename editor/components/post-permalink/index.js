@@ -21,8 +21,12 @@ class PostPermalink extends Component {
 		super( ...arguments );
 		this.state = {
 			showCopyConfirmation: false,
+			editingSlug: false,
 		};
 		this.onCopy = this.onCopy.bind( this );
+		this.onEditPermalink = this.onEditPermalink.bind( this );
+		this.onCancelEditPermalink = this.onCancelEditPermalink.bind( this );
+		this.onSavePermalink = this.onSavePermalink.bind( this );
 	}
 
 	componentWillUnmount() {
@@ -42,8 +46,24 @@ class PostPermalink extends Component {
 		}, 4000 );
 	}
 
+	onEditPermalink( event ) {
+		event.preventDefault();
+		this.setState( { editingSlug: true } );
+	}
+
+	onCancelEditPermalink( event ) {
+		event.preventDefault();
+		this.setState( { editingSlug: false } );
+	}
+
+	onSavePermalink( event ) {
+		event.preventDefault();
+		this.setState( { editingSlug: false } );
+	}
+
 	render() {
 		const { isNew, link, samplePermalink } = this.props;
+		const { showCopyConfirmation, editingSlug } = this.state;
 		if ( isNew || ! link ) {
 			return null;
 		}
@@ -55,15 +75,39 @@ class PostPermalink extends Component {
 			viewLink += '&preview=true';
 		}
 
+		const prefix = permalink.replace( /[^/]+\/?$/, '' ),
+			slug = permalink.replace( /.*\/([^/]+)\/?$/, '$1' );
+
 		return (
 			<div className="editor-post-permalink">
 				<Dashicon icon="admin-links" />
 				<span className="editor-post-permalink__label">{ __( 'Permalink:' ) }</span>
-				<Button className="editor-post-permalink__link" href={ viewLink } target="_blank">
-					{ permalink }
-				</Button>
+				<span className="editor-post-permalink__link">
+					<span className="editor-post-permalink__prefix">
+						{ prefix }
+					</span>
+					{ ! editingSlug &&
+						<span
+							className="editor-post-permalink__slug"
+							onClick={ this.onEditPermalink }
+						>
+							{ slug }
+						</span>
+					}
+					{ editingSlug &&
+						<form className="editor-post-permalink__slug-form" onSubmit={ this.onSavePermalink }>
+							<input
+								type="text"
+								className="editor-post-permalink__slug-input"
+								onBlur={ this.onCancelEditPermalink }
+								value={ slug }
+								required
+							/>
+						</form>
+					}
+				</span>
 				<ClipboardButton className="button" text={ viewLink } onCopy={ this.onCopy }>
-					{ this.state.showCopyConfirmation ? __( 'Copied!' ) : __( 'Copy' ) }
+					{ showCopyConfirmation ? __( 'Copied!' ) : __( 'Copy' ) }
 				</ClipboardButton>
 			</div>
 		);
