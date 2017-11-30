@@ -158,12 +158,22 @@ export function getAttributesFromDeprecatedVersion( blockType, innerHTML, attrib
 /**
  * Creates a block with fallback to the unknown type handler.
  *
- * @param  {?String} name       Block type name
- * @param  {String}  innerHTML  Raw block content
- * @param  {?Object} attributes Attributes obtained from block delimiters
- * @return {?Object}            An initialized block object (if possible)
+ * @param  {Object}  blockNode Parsed block node
+ * @return {?Object}           An initialized block object (if possible)
  */
-export function createBlockWithFallback( name, innerHTML, attributes ) {
+export function createBlockWithFallback( blockNode ) {
+	let {
+		blockName: name,
+		attrs: attributes,
+		innerBlocks = [],
+		innerHTML,
+	} = blockNode;
+
+	attributes = attributes || {};
+
+	// Trim content to avoid creation of intermediary freeform segments
+	innerHTML = innerHTML.trim();
+
 	// Use type from block content, otherwise find unknown handler.
 	name = name || getUnknownTypeHandlerName();
 
@@ -187,6 +197,9 @@ export function createBlockWithFallback( name, innerHTML, attributes ) {
 		blockType = getBlockType( name );
 	}
 
+	// Coerce inner blocks from parse form to canonical form
+	innerBlocks = innerBlocks.map( createBlockWithFallback );
+
 	// Include in set only if type were determined.
 	// TODO do we ever expect there to not be an unknown type handler?
 	if ( blockType && ( innerHTML || name !== fallbackBlock ) ) {
@@ -195,7 +208,8 @@ export function createBlockWithFallback( name, innerHTML, attributes ) {
 		// string serialization.
 		const block = createBlock(
 			name,
-			getBlockAttributes( blockType, innerHTML, attributes )
+			getBlockAttributes( blockType, innerHTML, attributes ),
+			innerBlocks
 		);
 
 		// Validate that the parsed block is valid, meaning that if we were to
@@ -232,8 +246,7 @@ export function createBlockWithFallback( name, innerHTML, attributes ) {
  */
 export function parseWithGrammar( content ) {
 	return grammarParse( content ).reduce( ( memo, blockNode ) => {
-		const { blockName, innerHTML, attrs } = blockNode;
-		const block = createBlockWithFallback( blockName, innerHTML.trim(), attrs );
+		const block = createBlockWithFallback( blockNode );
 		if ( block ) {
 			memo.push( block );
 		}
