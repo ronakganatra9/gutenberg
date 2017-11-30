@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { createStore as createReduxStore } from 'redux';
+
+/**
  * WordPress Dependencies
  */
 import { registerReducer } from '@wordpress/data';
@@ -18,10 +23,34 @@ import { BREAK_MEDIUM } from './constants';
  */
 const STORAGE_KEY = `GUTENBERG_PREFERENCES_${ window.userSettings.uid }`;
 
-const store = applyMiddlewares(
-	registerReducer( 'core/editor', withRehydratation( reducer, 'preferences' ) )
-);
-loadAndPersist( store, 'preferences', STORAGE_KEY, PREFERENCES_DEFAULTS );
-enhanceWithBrowserSize( store, BREAK_MEDIUM );
+/**
+ * Creates a Redux store for editor state, enhanced with middlewares, persistence,
+ * and browser size observer.
+ *
+ * @return {Object} Redux store
+ */
+export function createStore() {
+	const store = applyMiddlewares( createReduxStore( withRehydratation( reducer, 'preferences' ) ) );
+	loadAndPersist( store, 'preferences', STORAGE_KEY, PREFERENCES_DEFAULTS );
+	enhanceWithBrowserSize( store, BREAK_MEDIUM );
 
-export default store;
+	return store;
+}
+
+/**
+ * Registers an editor state store, enhanced with middlewares, persistence, and
+ * browser size observer.
+ *
+ * @return {Object} Registered data store
+ */
+export function createRegisteredStore() {
+	const store = applyMiddlewares(
+		registerReducer( 'core/editor', withRehydratation( reducer, 'preferences' ) )
+	);
+	loadAndPersist( store, 'preferences', STORAGE_KEY, PREFERENCES_DEFAULTS );
+	enhanceWithBrowserSize( store, BREAK_MEDIUM );
+
+	return store;
+}
+
+export default createRegisteredStore();
