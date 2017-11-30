@@ -391,11 +391,12 @@
 .editor-block-list__sibling-inserter {
 	z-index: z-index( '.editor-block-list__sibling-inserter' );
 	position: relative;
-	max-width: $visual-editor-max-width + ( 2 * $block-mover-padding-visible ) - ( 2 * $block-padding );
-	margin: 0 auto;
+	padding-left: $block-padding;
+	padding-right: $block-padding;
 
 	@include break-small {
-		max-width: $visual-editor-max-width - ( 2 * $block-padding );
+		padding-left: #{ $block-padding + $block-mover-padding-visible };
+		padding-right: #{ $block-padding + $block-mover-padding-visible };
 	}
 
 	&:not( [data-insert-index="0"] ) {
@@ -405,11 +406,17 @@
 	&:before {
 		content: '';
 		position: absolute;
-		left: 0;
+		left: $block-padding;
+		right: $block-padding;
 		width: 100%;
 		height: 44px;
 		transition: 0.1s height;
 		transform: translateY( -50% );
+
+		@include break-small {
+			left: #{ $block-padding + $block-mover-padding-visible };
+			right: #{ $block-padding + $block-mover-padding-visible };
+		}
 	}
 
 	&:hover:before {
