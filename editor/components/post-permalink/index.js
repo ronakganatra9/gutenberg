@@ -47,17 +47,10 @@ class PostPermalink extends Component {
 	}
 
 	onEditPermalink( event ) {
-		event.preventDefault();
 		this.setState( { editingSlug: true } );
 	}
 
-	onCancelEditPermalink( event ) {
-		event.preventDefault();
-		this.setState( { editingSlug: false } );
-	}
-
 	onSavePermalink( event ) {
-		event.preventDefault();
 		this.setState( { editingSlug: false } );
 	}
 
@@ -82,33 +75,44 @@ class PostPermalink extends Component {
 			<div className="editor-post-permalink">
 				<Dashicon icon="admin-links" />
 				<span className="editor-post-permalink__label">{ __( 'Permalink:' ) }</span>
-				<span className="editor-post-permalink__link">
-					<span className="editor-post-permalink__prefix">
-						{ prefix }
-					</span>
-					{ ! editingSlug &&
+				{ ! editingSlug && <Button
+						className="editor-post-permalink__link"
+						href={ viewLink }
+						target="_blank"
+					>
+						{ permalink }
+					</Button>
+				}
+				{ editingSlug &&
+					<form className="editor-post-permalink__slug-form" onSubmit={ this.onSavePermalink }>
+						<span className="editor-post-permalink__prefix">
+							{ prefix }
+						</span>
+						<input
+							type="text"
+							className="editor-post-permalink__slug-input"
+							value={ slug }
+							required
+						/>
+						/
 						<Button
-							className="editor-post-permalink__slug"
-							onClick={ this.onEditPermalink }
+							className="editor-post-permalink__save"
+							onClick={ this.onSavePermalink }
+							isLarge
 						>
-							{ slug }
+							{ __( 'Ok' ) }
 						</Button>
-					}
-					{ editingSlug &&
-						<form className="editor-post-permalink__slug-form" onSubmit={ this.onSavePermalink }>
-							<input
-								type="text"
-								className="editor-post-permalink__slug-input"
-								onBlur={ this.onCancelEditPermalink }
-								value={ slug }
-								required
-							/>
-						</form>
-					}
-				</span>
-				<ClipboardButton className="button" text={ viewLink } onCopy={ this.onCopy }>
-					{ showCopyConfirmation ? __( 'Copied!' ) : __( 'Copy' ) }
-				</ClipboardButton>
+					</form>
+				}
+				{ ! editingSlug &&
+					<Button
+						className="editor-post-permalink__edit"
+						onClick={ this.onEditPermalink }
+						isLarge
+					>
+						{ __( 'Edit' ) }
+					</Button>
+				}
 			</div>
 		);
 	}
