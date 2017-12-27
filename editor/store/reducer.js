@@ -661,7 +661,6 @@ const locations = [
 const defaultMetaBoxState = locations.reduce( ( result, key ) => {
 	result[ key ] = {
 		isActive: false,
-		isDirty: false,
 		isUpdating: false,
 	};
 
@@ -686,7 +685,6 @@ export function metaBoxes( state = defaultMetaBoxState, action ) {
 					...state[ action.location ],
 					isLoaded: true,
 					isUpdating: false,
-					isDirty: false,
 				},
 			};
 		case 'HANDLE_META_BOX_RELOAD':
@@ -695,26 +693,15 @@ export function metaBoxes( state = defaultMetaBoxState, action ) {
 				[ action.location ]: {
 					...state[ action.location ],
 					isUpdating: false,
-					isDirty: false,
 				},
 			};
 		case 'REQUEST_META_BOX_UPDATES':
-			return action.locations.reduce( ( newState, location ) => {
-				newState[ location ] = {
-					...state[ location ],
-					isUpdating: true,
-					isDirty: false,
+			return mapValues( state, ( metaBox ) => {
+				return {
+					...metaBox,
+					isUpdating: metaBox.isActive,
 				};
-				return newState;
-			}, { ...state } );
-		case 'META_BOX_STATE_CHANGED':
-			return {
-				...state,
-				[ action.location ]: {
-					...state[ action.location ],
-					isDirty: action.hasChanged,
-				},
-			};
+			} );
 		default:
 			return state;
 	}
