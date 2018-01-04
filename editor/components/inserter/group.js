@@ -39,12 +39,11 @@ export default class InserterGroup extends Component {
 		}
 	}
 
-	hoverBlock( block ) {
-		return () => {
-			if ( this.props.onHover ) {
-				this.props.onHover( block );
-			}
-		};
+	createToggleBlockHover( block ) {
+		if ( ! this.props.onHover ) {
+			return null;
+		}
+		return () => this.props.onHover( block );
 	}
 
 	renderItem( block ) {
@@ -64,8 +63,8 @@ export default class InserterGroup extends Component {
 				ref={ bindReferenceNode( block.name ) }
 				tabIndex={ current === block.name || disabled ? null : '-1' }
 				disabled={ disabled }
-				onMouseEnter={ this.hoverBlock( ( block ) ) }
-				onMouseLeave={ this.hoverBlock( null ) }
+				onMouseEnter={ this.createToggleBlockHover( block ) }
+				onMouseLeave={ this.createToggleBlockHover( null ) }
 			>
 				<BlockIcon icon={ block.icon } />
 				{ block.title }

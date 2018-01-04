@@ -33,11 +33,7 @@ registerBlockType( 'core/code', {
 	},
 
 	example: {
-		content: `
-<?php
-	echo "Beep Beeb Boop";
-?>
-`,
+		content: '<?php echo "Beep Beep Boop";?>',
 	},
 
 	supports: {
