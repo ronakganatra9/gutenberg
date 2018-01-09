@@ -16,7 +16,6 @@ import { registerBlockType } from '../../api';
 import RangeControl from '../../inspector-controls/range-control';
 import InnerBlocks from '../../inner-blocks';
 import InspectorControls from '../../inspector-controls';
-import BlockDescription from '../../block-description';
 
 function mapInnerBlocks( innerBlocks, columns, callback ) {
 	return columns.map( ( endOffset, index ) => {
@@ -38,6 +37,8 @@ registerBlockType( 'core/columns', {
 			default: [ 1, 2 ],
 		},
 	},
+
+	description: __( 'A multi-column layout of content.' ),
 
 	getEditWrapperProps() {
 		return { 'data-align': 'wide' };
@@ -96,9 +97,6 @@ registerBlockType( 'core/columns', {
 		return [
 			focus && (
 				<InspectorControls key="inspector">
-					<BlockDescription>
-						<p>{ __( 'A multi-column layout of content.' ) }</p>
-					</BlockDescription>
 					<RangeControl
 						label={ __( 'Columns' ) }
 						value={ columns.length }
