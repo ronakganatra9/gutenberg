@@ -31,7 +31,6 @@ class PostPermalink extends Component {
 			permalink: '',
 		};
 		this.getSlug = this.getSlug.bind( this );
-		this.onCopy = this.onCopy.bind( this );
 		this.onChangePermalink = this.onChangePermalink.bind( this );
 		this.onEditPermalink = this.onEditPermalink.bind( this );
 		this.onSavePermalink = this.onSavePermalink.bind( this );
@@ -88,19 +87,6 @@ class PostPermalink extends Component {
 			permalink: this.getPermalink( slug ),
 			slug: slug,
 		} );
-	}
-
-	onCopy() {
-		this.setState( {
-			showCopyConfirmation: true,
-		} );
-
-		clearTimeout( this.dismissCopyConfirmation );
-		this.dismissCopyConfirmation = setTimeout( () => {
-			this.setState( {
-				showCopyConfirmation: false,
-			} );
-		}, 4000 );
 	}
 
 	/**
