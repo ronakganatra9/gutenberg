@@ -27,7 +27,7 @@ import {
 	withSpokenMessages,
 	withContext,
 } from '@wordpress/components';
-import { getCategories, getBlockTypes } from '@wordpress/blocks';
+import { getCategories, getBlockTypes, isReusableBlock } from '@wordpress/blocks';
 import { keycodes } from '@wordpress/utils';
 
 /**
@@ -111,6 +111,11 @@ export class InserterMenu extends Component {
 		} );
 	}
 
+	/**
+	 * Sets the currently hovered block as selected to preview it.
+	 *
+	 * @param   {Object} block Block object.
+	 */
 	previewBlock( block ) {
 		this.setState( { selectedBlock: block } );
 	}
@@ -391,7 +396,9 @@ export class InserterMenu extends Component {
 						{ this.renderCategories( this.getVisibleBlocksByCategory( this.getBlockTypes() ) ) }
 					</div>
 				}
-				{ selectedBlock && <BlockPreview name={ selectedBlock.name } attributes={ selectedBlock.initialAttributes } /> }
+				{ selectedBlock && isReusableBlock( selectedBlock ) &&
+					<BlockPreview name={ selectedBlock.name } attributes={ selectedBlock.initialAttributes } />
+				}
 			</TabbableContainer>
 		);
 	}

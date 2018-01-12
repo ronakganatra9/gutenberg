@@ -39,6 +39,12 @@ export default class InserterGroup extends Component {
 		}
 	}
 
+	/**
+	 * Returns an event handler triggered when hovering a block.
+	 *
+	 * @param   {Object} block Block object.
+	 * @returns {Func}         Event Handler.
+	 */
 	createToggleBlockHover( block ) {
 		if ( ! this.props.onHover ) {
 			return null;
