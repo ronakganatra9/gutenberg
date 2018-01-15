@@ -16,20 +16,21 @@ import MediaUploadButton from '../media-upload-button';
  * @param   {Object} props  React props passed to the component.
  * @returns {Object}        Rendered placeholder.
  */
-export default function ImagePlaceHolder( { className, icon, label, onSelectImage } ) {
+export default function ImagePlaceHolder( { className, icon, label, onSelectImage, multiple = false } ) {
 	const setImage = ( [ image ] ) => onSelectImage( image );
-	const dropFiles = ( files ) => mediaUpload( files, setImage );
-	const uploadFromFiles = ( event ) => mediaUpload( event.target.files, setImage );
+	const dropFiles = ( files ) => mediaUpload( files, multiple ? onSelectImage : setImage );
+	const uploadFromFiles = ( event ) => mediaUpload( event.target.files, multiple ? onSelectImage : setImage );
 	return (
 		<Placeholder
 			className={ className }
-			instructions={ __( 'Drag image here or add from media library' ) }
+			instructions={ multiple ? __( 'Drag images here or add from media library' ) : __( 'Drag image here or add from media library' ) }
 			icon={ icon }
 			label={ label } >
 			<DropZone
 				onFilesDrop={ dropFiles }
 			/>
 			<FormFileUpload
+				multiple={ multiple }
 				isLarge
 				className="wp-block-image__upload-button"
 				onChange={ uploadFromFiles }
@@ -39,6 +40,8 @@ export default function ImagePlaceHolder( { className, icon, label, onSelectImag
 			</FormFileUpload>
 			<MediaUploadButton
 				buttonProps={ { isLarge: true } }
+				gallery={ multiple }
+				multiple={ multiple }
 				onSelect={ onSelectImage }
 				type="image"
 			>
