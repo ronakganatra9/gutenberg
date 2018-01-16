@@ -17,7 +17,7 @@ import './style.scss';
 import { registerBlockType, createBlock } from '../../api';
 import { default as GalleryBlock, defaultColumnsNumber } from './block';
 
-registerBlockType( 'core/gallery', {
+export const registerGalleryBlock = () => registerBlockType( 'core/gallery', {
 	title: __( 'Gallery' ),
 	description: __( 'Image galleries are a great way to share groups of pictures on your site.' ),
 	icon: 'format-gallery',

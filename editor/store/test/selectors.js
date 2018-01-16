@@ -7,7 +7,7 @@ import moment from 'moment';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType, unregisterBlockType } from '@wordpress/blocks';
+import { registerCoreBlocks, registerBlockType, unregisterBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -2220,6 +2220,10 @@ describe( 'selectors', () => {
 	} );
 
 	describe( 'getMostFrequentlyUsedBlocks', () => {
+		beforeAll( () => {
+			registerCoreBlocks();
+		} );
+
 		it( 'should have paragraph and image to bring frequently used blocks up to three blocks', () => {
 			const noUsage = { preferences: { blockUsage: {} } };
 			const someUsage = { preferences: { blockUsage: { 'core/paragraph': 1 } } };
@@ -2249,6 +2253,10 @@ describe( 'selectors', () => {
 	} );
 
 	describe( 'getRecentlyUsedBlocks', () => {
+		beforeAll( () => {
+			registerCoreBlocks();
+		} );
+
 		it( 'should return the most recently used blocks', () => {
 			const state = {
 				preferences: {
