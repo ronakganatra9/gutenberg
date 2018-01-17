@@ -29,9 +29,10 @@ const Enhanced = compose(
 	withState( { hasCopied: false } )
 )( CopyContentButton );
 
+const cached = <Enhanced key="copy-content-button" />;
+
 addFilter(
 	'editor.EditorActions.children',
 	'core/copy-content/button',
-	( children ) =>
-		[ ...children, <Enhanced key="copy-content-button" /> ]
+	( children ) => [ ...children, cached ]
 );
