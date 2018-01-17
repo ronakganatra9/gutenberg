@@ -2,19 +2,16 @@
  * WordPress dependencies
  */
 import { MenuItemsGroup } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
-/**
- * Internal dependencies
- */
-import CopyContentButton from '../copy-content-button';
-
 export default function EditorActions() {
+	const children = applyFilters( 'editor.EditorActions.children', [] );
 	return (
 		<MenuItemsGroup className="editor-actions"
 			label={ __( 'Tools' ) }
 		>
-			<CopyContentButton />
+			{ children }
 		</MenuItemsGroup>
 	);
 }

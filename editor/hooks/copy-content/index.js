@@ -1,19 +1,11 @@
 /**
- * External dependencies
- */
-import { connect } from 'react-redux';
-
-/**
  * WordPress dependencies
  */
 import { ClipboardButton } from '@wordpress/components';
 import { Component } from '@wordpress/element';
+import { query } from '@wordpress/data';
+import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
-
-/**
- * Internal dependencies
- */
-import { getEditedPostContent } from '../../../store/selectors';
 
 class CopyContentButton extends Component {
 	constructor() {
@@ -44,8 +36,16 @@ class CopyContentButton extends Component {
 	}
 }
 
-export default connect(
-	( state ) => ( {
-		editedPostContent: getEditedPostContent( state ),
-	} )
-)( CopyContentButton );
+const Enhanced = query( ( select ) => ( {
+	editedPostContent: select( 'core/editor', 'getEditedPostContent' ),
+} ) )( CopyContentButton );
+
+function withCopyContentButton( children ) {
+	return [
+		...children,
+		<Enhanced key="copy-content-button" />,
+	];
+}
+
+addFilter( 'editor.EditorActions.children',
+	'core/copy-content/button', withCopyContentButton );
