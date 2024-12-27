@@ -12,15 +12,15 @@ import {
 /**
  * External dependencies
  */
-import componentsStyles from '!!raw-loader!@wordpress/components/build-style/style.css?raw';
-import blockEditorContentStyles from '!!raw-loader!@wordpress/block-editor/build-style/content.css?raw';
-import blocksStyles from '!!raw-loader!@wordpress/block-library/build-style/style.css?raw';
-import blocksEditorStyles from '!!raw-loader!@wordpress/block-library/build-style/editor.css?raw';
+import componentsStyles from '!!raw-loader!@wordpress/components/build-style/style.css';
+import blockEditorContentStyles from '!!raw-loader!@wordpress/block-editor/build-style/content.css';
+import blocksStyles from '!!raw-loader!@wordpress/block-library/build-style/style.css';
+import blocksEditorStyles from '!!raw-loader!@wordpress/block-library/build-style/editor.css';
 
 /**
  * Internal dependencies
  */
-import editorStyles from '../editor-styles';
+import { editorStyles } from '../editor-styles';
 
 //Base styles for the content within the block canvas iframe.
 const contentStyles = [
@@ -28,7 +28,7 @@ const contentStyles = [
 	{ css: blockEditorContentStyles },
 	{ css: blocksStyles },
 	{ css: blocksEditorStyles },
-	{ css: editorStyles },
+	...editorStyles,
 ];
 
 import './style.css';
