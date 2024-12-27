@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useReducer } from '@wordpress/element';
 import {
 	Panel,
 	__experimentalToolsPanel as ToolsPanel,
@@ -21,22 +21,47 @@ export default {
 	},
 };
 
-export const Default = ( { panelId, onChange: onChangeProp, ...props } ) => {
-	const [ resolution, setResolution ] = useState( undefined );
-	const resetAll = () => {
-		setResolution( undefined );
+export const Default = ( {
+	label,
+	panelId,
+	onChange: onChangeProp,
+	...props
+} ) => {
+	const [ attributes, setAttributes ] = useReducer(
+		( prevState, nextState ) => ( { ...prevState, ...nextState } ),
+		{}
+	);
+	const { resolution } = attributes;
+	const resetAll = ( resetFilters = [] ) => {
+		let newAttributes = {};
+
+		resetFilters.forEach( ( resetFilter ) => {
+			newAttributes = {
+				...newAttributes,
+				...resetFilter( newAttributes ),
+			};
+		} );
+
+		setAttributes( newAttributes );
 		onChangeProp( undefined );
 	};
 	return (
 		<Panel>
-			<ToolsPanel panelId={ panelId } resetAll={ resetAll }>
+			<ToolsPanel
+				label={ label }
+				panelId={ panelId }
+				resetAll={ resetAll }
+			>
 				<ResolutionTool
 					panelId={ panelId }
 					onChange={ ( newValue ) => {
-						setResolution( newValue );
+						setAttributes( { resolution: newValue } );
 						onChangeProp( newValue );
 					} }
 					value={ resolution }
+					resetAllFilter={ () => ( {
+						resolution: undefined,
+					} ) }
 					{ ...props }
 				/>
 			</ToolsPanel>
@@ -44,5 +69,7 @@ export const Default = ( { panelId, onChange: onChangeProp, ...props } ) => {
 	);
 };
 Default.args = {
+	label: 'Settings',
+	defaultValue: 'full',
 	panelId: 'panel-id',
 };

@@ -125,14 +125,14 @@ function WidthPanel( { selectedWidth, setAttributes } ) {
 			dropdownMenuProps={ dropdownMenuProps }
 		>
 			<ToolsPanelItem
-				label={ __( 'Button width' ) }
+				label={ __( 'Width' ) }
 				isShownByDefault
 				hasValue={ () => !! selectedWidth }
 				onDeselect={ () => setAttributes( { width: undefined } ) }
 				__nextHasNoMarginBottom
 			>
 				<ToggleGroupControl
-					label={ __( 'Button width' ) }
+					label={ __( 'Width' ) }
 					value={ selectedWidth }
 					onChange={ ( newWidth ) =>
 						setAttributes( { width: newWidth } )

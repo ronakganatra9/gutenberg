@@ -8,15 +8,15 @@
 
 ### `children`
 
-Text to display inside the badge.
-
  - Type: `string`
  - Required: Yes
 
-### `intent`
+Text to display inside the badge.
 
-Badge variant.
+### `intent`
 
  - Type: `"default" | "info" | "success" | "warning" | "error"`
  - Required: No
  - Default: `default`
+
+Badge variant.

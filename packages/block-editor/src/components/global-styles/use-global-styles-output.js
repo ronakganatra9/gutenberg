@@ -47,7 +47,7 @@ const ELEMENT_CLASS_NAMES = {
 // List of block support features that can have their related styles
 // generated under their own feature level selector rather than the block's.
 const BLOCK_SUPPORT_FEATURE_LEVEL_SELECTORS = {
-	border: 'border',
+	__experimentalBorder: 'border',
 	color: 'color',
 	spacing: 'spacing',
 	typography: 'typography',
@@ -624,7 +624,7 @@ function pickStyleKeys( treeToPickFrom ) {
 	// clone the style objects so that `getFeatureDeclarations` can remove consumed keys from it
 	const clonedEntries = pickedEntries.map( ( [ key, style ] ) => [
 		key,
-		structuredClone( style ),
+		JSON.parse( JSON.stringify( style ) ),
 	] );
 	return Object.fromEntries( clonedEntries );
 }

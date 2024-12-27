@@ -80,7 +80,7 @@
 		"react-refresh": "^0.14.0",
 		"read-pkg-up": "^7.0.1",
 		"resolve-bin": "^0.4.0",
-		"rtlcss-webpack-plugin": "^4.0.7",
+		"rtlcss": "^4.3.0",
 		"sass": "^1.50.1",
 		"sass-loader": "^16.0.3",
 		"schema-utils": "^4.2.0",

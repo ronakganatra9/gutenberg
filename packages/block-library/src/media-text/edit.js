@@ -76,6 +76,7 @@ function attributesFromMedia( {
 				mediaLink: undefined,
 				href: undefined,
 				focalPoint: undefined,
+				useFeaturedImage: false,
 			} );
 			return;
 		}
@@ -128,6 +129,7 @@ function attributesFromMedia( {
 			mediaLink: media.link || undefined,
 			href: newHref,
 			focalPoint: undefined,
+			useFeaturedImage: false,
 		} );
 	};
 }
@@ -166,11 +168,18 @@ function MediaTextEdit( {
 		postId
 	);
 
-	const featuredImageMedia = useSelect(
-		( select ) =>
-			featuredImage &&
-			select( coreStore ).getMedia( featuredImage, { context: 'view' } ),
-		[ featuredImage ]
+	const { featuredImageMedia } = useSelect(
+		( select ) => {
+			return {
+				featuredImageMedia:
+					featuredImage && useFeaturedImage
+						? select( coreStore ).getMedia( featuredImage, {
+								context: 'view',
+						  } )
+						: undefined,
+			};
+		},
+		[ featuredImage, useFeaturedImage ]
 	);
 
 	const featuredImageURL = useFeaturedImage
